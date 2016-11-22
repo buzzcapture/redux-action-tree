@@ -1,11 +1,14 @@
-function signalsMiddleware(context) {
-  return function middleware(next) {
-    return function trigger(action) {
-      if (action.__signal) {
-        return action(context.dispatch, context.getState);
-      }
+var _ = require("lodash");
 
-      return next(action);
+/**
+ * Middleware for signals.
+ * @param context
+ * @returns {Function}
+ */
+function signalsMiddleware (context) {
+  return function middleware (next) {
+    return function trigger (action) {
+      return _.isFunction(action) ? action(context.dispatch, context.getState) : next(action);
     };
   };
 }

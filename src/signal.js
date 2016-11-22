@@ -1,28 +1,28 @@
-var actionTree = require('action-tree');
+var actionTree = require("action-tree");
 var staticTree = actionTree.staticTree;
 var executeTree = actionTree.executeTree;
 
-function createSignal(chain) {
-  var tree = staticTree(chain)
+function createSignal (chain) {
+  var tree = staticTree(chain);
 
   function runAction (dispatch, getState, action, payload) {
-    return new Promise((resolve, reject) => {
-      var actionFunc = tree.actions[action.actionIndex]
+    return new Promise(function (resolve, reject) {
+      var result, actionFunc;
+  
+      actionFunc = tree.actions[action.actionIndex];
 
-      var result;
-
-      function outputFn(path, outputPayload) {
+      function outputFn (path, outputPayload) {
         result = {
-          path: typeof path === 'string' ? path : null,
-          payload: typeof path === 'string' ? outputPayload : path
-        }
+          path: typeof path === "string" ? path : null,
+          payload: typeof path === "string" ? outputPayload : path
+        };
 
         if (action.isAsync) {
-          resolve(result)
+          resolve(result);
         }
       }
 
-      (actionFunc.outputs || ['success', 'error']).forEach(function(output) {
+      (actionFunc.outputs || ["success", "error"]).forEach(function(output) {
         outputFn[output] = outputFn.bind(null, output);
       });
 
@@ -33,18 +33,19 @@ function createSignal(chain) {
         getState: getState
       });
 
-      if (!action.isAsync) { resolve(result) }
-    })
+      if (!action.isAsync) { 
+        resolve(result); 
+      }
+    });
   }
 
-  const executer = function (payload) {
+  function executer (payload) {
     return function (dispatch, getState) {
-      return executeTree(tree.tree, runAction.bind(null, dispatch, getState), payload)
-    }
+      return executeTree(tree.tree, runAction.bind(null, dispatch, getState), payload);
+    };
   }
 
   return executer;
-
 }
 
 module.exports = createSignal;

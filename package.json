@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/cerebral-legacy/redux-action-tree#readme",
   "dependencies": {
-    "action-tree": "0.0.1"
+    "action-tree": "0.0.1",
+    "lodash": "^4.17.2"
   }
 }
