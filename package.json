@@ -1,6 +1,6 @@
 {
   "name": "redux-action-tree",
-  "version": "0.1.2",
+  "version": "0.1.2-bc",
   "description": "Signals for Redux",
   "main": "index.js",
   "scripts": {
